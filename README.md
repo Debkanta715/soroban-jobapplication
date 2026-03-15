@@ -126,19 +126,7 @@ CBG5EZZWEYWGDGPZLLSCGNBQJPRDBDPSYCZ4PC3JAGATTTHRVQCUCHQJ
 
 # 📸 Deployment Proof
 
-Add your screenshot inside:
-
-```
-
-```
-
-Example:
-
-
-![Contract Explorer Proof](transction.png)
-
----
-
+![Contract Explorer Proof](transa
 # 📷 Screenshots
 
 Store all images inside an **images folder**.
