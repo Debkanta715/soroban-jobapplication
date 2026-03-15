@@ -224,6 +224,71 @@ stellar contract deploy `
 	--alias hello_world
 ```
 
+## Smart Contract Address
+
+Add your deployed contract details here so anyone reading the project can quickly find it.
+
+### Deployment Info
+
+- Network: `testnet`
+- Contract alias: `hello_world`
+- Contract package: `hello-world`
+- WASM file: `target/wasm32v1-none/release/hello_world.wasm`
+
+### Contract Address
+
+Paste your real deployed contract ID here:
+
+```text
+Contract ID: CXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+```
+
+If you want, you can also keep a shareable block like this:
+
+```text
+Project Name: Soroban Job Application
+Network: testnet
+Alias: hello_world
+Contract ID: CXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+```
+
+## Images
+
+You can add screenshots or UI images here when you build a frontend, dashboard, or deployment proof.
+
+Suggested image files:
+
+- `images/contract-deploy.png`
+- `images/create-job.png`
+- `images/apply-job.png`
+- `images/test-result.png`
+
+Example markdown image section:
+
+```md
+## Screenshots
+
+### Contract Deployment
+![Contract Deployment](images/contract-deploy.png)
+
+### Create Job Example
+![Create Job](images/create-job.png)
+
+### Apply to Job Example
+![Apply to Job](images/apply-job.png)
+
+### Test Result
+![Test Result](images/test-result.png)
+```
+
+If you do not have images yet, keep this simple placeholder section:
+
+```md
+## Screenshots
+
+Screenshots will be added here after frontend integration or live contract interaction.
+```
+
 ## Example Invoke Commands
 
 Replace values like contract ID and addresses with your real values.
