@@ -129,13 +129,13 @@ CBG5EZZWEYWGDGPZLLSCGNBQJPRDBDPSYCZ4PC3JAGATTTHRVQCUCHQJ
 Add your screenshot inside:
 
 ```
-images/contract-explorer-testnet.png
+images/transction.png
 ```
 
 Example:
 
 ```md
-![Contract Explorer Proof](images/contract-explorer-testnet.png)
+![Contract Explorer Proof](images/transction.png)
 ```
 
 ---
