@@ -129,14 +129,13 @@ CBG5EZZWEYWGDGPZLLSCGNBQJPRDBDPSYCZ4PC3JAGATTTHRVQCUCHQJ
 Add your screenshot inside:
 
 ```
-images/transction.png
+
 ```
 
 Example:
 
-```md
-![Contract Explorer Proof](images/transction.png)
-```
+
+![Contract Explorer Proof](transction.png)
 
 ---
 
@@ -240,3 +239,4 @@ stellar contract invoke \
 # 📄 Summary
 
 This repository contains a **complete Soroban smart contract project** for job posting and job application management with tests, build support, and deployment-ready WASM output.
+
