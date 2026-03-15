@@ -1,213 +1,315 @@
-# Job Application Contract on Soroban
+# Soroban Job Application
 
-A clean, production-style Soroban smart contract for job posting and application management.
+A Soroban smart contract project for posting jobs and submitting job applications on Stellar.
 
-## Why This Contract
+This repository is a Rust workspace with one contract package in `contracts/hello-world`. The contract is written for Soroban and compiled to WASM for deployment.
 
-This contract gives you a simple on-chain hiring flow:
+## What This Contract Does
 
-- Employers create job posts.
-- Applicants submit applications.
-- Employers review and set result status.
-- Anyone can query jobs and application IDs.
+This contract supports a simple hiring workflow:
 
-It is a strong base for hackathons, demos, or MVP products.
+- An employer creates a job post.
+- An applicant applies to that job.
+- The employer accepts or rejects the application.
+- The contract stores job and application IDs for lookup.
 
-## Project Structure
+## Folder Structure
+
+This README is based on the current project structure:
 
 ```text
-.
+soroban-jobapplication/
 ├── Cargo.toml
 ├── README.md
-└── contracts
-		└── hello-world
-				├── Cargo.toml
-				├── Makefile
-				└── src
-						├── lib.rs
-						└── test.rs
+├── contracts/
+│   └── hello-world/
+│       ├── Cargo.toml
+│       ├── Makefile
+│       └── src/
+│           ├── lib.rs
+│           └── test.rs
+└── target/
 ```
 
-Main files:
+Important files:
 
-- Contract logic: `contracts/hello-world/src/lib.rs`
-- Unit tests: `contracts/hello-world/src/test.rs`
+- Root workspace config: `Cargo.toml`
+- Contract code: `contracts/hello-world/src/lib.rs`
+- Contract tests: `contracts/hello-world/src/test.rs`
+- Contract package config: `contracts/hello-world/Cargo.toml`
 
-## Features
-
-### Employer Actions
-
-- Create a new job post.
-- Open or close an existing job.
-- Accept or reject a submitted application.
-
-### Applicant Actions
-
-- Apply to an open job.
-- View application details.
-- List own application IDs.
-
-### Safety Rules
-
-- Auth is required for protected actions.
-- Salary range is validated.
-- Only job owner can update job/application state.
-- One applicant cannot apply twice to the same job.
-
-## Data Models
+## Contract Models
 
 ### Job
 
-```rust
-pub struct Job {
-		pub id: u64,
-		pub employer: Address,
-		pub title: String,
-		pub description: String,
-		pub location: String,
-		pub required_skills: Vec<String>,
-		pub salary_min: i128,
-		pub salary_max: i128,
-		pub is_open: bool,
-		pub created_at: u64,
-}
-```
+The contract stores each job with:
+
+- `id`
+- `employer`
+- `title`
+- `description`
+- `location`
+- `required_skills`
+- `salary_min`
+- `salary_max`
+- `is_open`
+- `created_at`
 
 ### Application
 
+The contract stores each application with:
+
+- `id`
+- `job_id`
+- `applicant`
+- `cover_letter`
+- `resume_link`
+- `status`
+- `applied_at`
+
+### Status Enum
+
+Application status can be:
+
+- `Pending`
+- `Accepted`
+- `Rejected`
+
+## Contract Methods
+
+These are the public methods in your current code:
+
+### Create a job
+
 ```rust
-pub struct Application {
-		pub id: u64,
-		pub job_id: u64,
-		pub applicant: Address,
-		pub cover_letter: String,
-		pub resume_link: String,
-		pub status: ApplicationStatus,
-		pub applied_at: u64,
-}
+create_job(
+		env: Env,
+		employer: Address,
+		title: String,
+		description: String,
+		location: String,
+		required_skills: Vec<String>,
+		salary_min: i128,
+		salary_max: i128,
+) -> u64
 ```
 
-## Public Methods
+Returns the new `job_id`.
+
+### Get a job
 
 ```rust
-create_job(...) -> u64
-get_job(job_id) -> Option<Job>
-set_job_open_status(employer, job_id, is_open)
-apply_to_job(applicant, job_id, cover_letter, resume_link) -> u64
-get_application(application_id) -> Option<Application>
-set_application_status(employer, application_id, status)
-list_job_application_ids(job_id) -> Vec<u64>
-list_applicant_application_ids(applicant) -> Vec<u64>
+get_job(env: Env, job_id: u64) -> Option<Job>
 ```
 
-## Quick Start
+### Open or close a job
 
-### 1. Run Unit Tests
+```rust
+set_job_open_status(env: Env, employer: Address, job_id: u64, is_open: bool)
+```
 
-From workspace root:
+Only the job owner can do this.
 
-```bash
+### Apply to a job
+
+```rust
+apply_to_job(
+		env: Env,
+		applicant: Address,
+		job_id: u64,
+		cover_letter: String,
+		resume_link: String,
+) -> u64
+```
+
+Returns the new `application_id`.
+
+### Get an application
+
+```rust
+get_application(env: Env, application_id: u64) -> Option<Application>
+```
+
+### Update application status
+
+```rust
+set_application_status(
+		env: Env,
+		employer: Address,
+		application_id: u64,
+		status: ApplicationStatus,
+)
+```
+
+Only the job owner can do this.
+
+### List application IDs for a job
+
+```rust
+list_job_application_ids(env: Env, job_id: u64) -> Vec<u64>
+```
+
+### List application IDs for an applicant
+
+```rust
+list_applicant_application_ids(env: Env, applicant: Address) -> Vec<u64>
+```
+
+## Built-In Rules
+
+Your current contract enforces these rules:
+
+- salary cannot be negative
+- `salary_max` cannot be less than `salary_min`
+- a closed job cannot receive applications
+- the same applicant cannot apply to the same job twice
+- only the job owner can change job state
+- only the job owner can change application status
+
+## Error Types
+
+The contract currently defines these errors:
+
+```rust
+InvalidSalaryRange = 1
+JobNotFound = 2
+ApplicationNotFound = 3
+JobClosed = 4
+NotJobOwner = 5
+AlreadyApplied = 6
+```
+
+## How To Run
+
+### Run tests from the workspace root
+
+```powershell
 cargo test -p hello-world
 ```
 
-### 2. Build WASM Contract
+Your latest test run succeeded with 3 passing tests.
 
-From `contracts/hello-world`:
+### Build the contract WASM
 
-```bash
+From the contract folder:
+
+```powershell
+cd contracts/hello-world
 stellar contract build
 ```
 
-Expected output file (release build):
+Expected output:
 
 ```text
-contracts/hello-world/target/wasm32v1-none/release/hello_world.wasm
+target/wasm32v1-none/release/hello_world.wasm
 ```
 
-## CLI Usage Example (Local Sandbox)
+## Current Tests
 
-These commands are a practical flow you can adapt.
+Your test file currently checks these scenarios:
 
-### 1. Start local sandbox
+1. Create job, apply, and accept application
+2. Prevent duplicate application to the same job
+3. Prevent non-owner from changing application status
 
-```bash
-stellar network start local
+## Deployment Example
+
+You already deployed using a command like this:
+
+```powershell
+stellar contract deploy `
+	--wasm target/wasm32v1-none/release/hello_world.wasm `
+	--source-account alice `
+	--network testnet `
+	--alias hello_world
 ```
 
-### 2. Deploy contract
+## Example Invoke Commands
 
-```bash
-stellar contract deploy \
-	--network local \
-	--source alice \
-	--wasm contracts/hello-world/target/wasm32v1-none/release/hello_world.wasm
+Replace values like contract ID and addresses with your real values.
+
+### Create a job
+
+```powershell
+stellar contract invoke `
+	--id hello_world `
+	--source-account alice `
+	--network testnet `
+	-- create_job `
+	--employer GBXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX `
+	--title "Rust Smart Contract Engineer" `
+	--description "Build secure Soroban applications" `
+	--location "Remote" `
+	--required_skills '["Rust","Soroban","Testing"]' `
+	--salary_min 3000 `
+	--salary_max 7000
 ```
 
-Save the returned contract ID:
+### Get a job
 
-```bash
-CONTRACT_ID=<paste_contract_id_here>
+```powershell
+stellar contract invoke `
+	--id hello_world `
+	--source-account alice `
+	--network testnet `
+	-- get_job `
+	--job_id 1
 ```
 
-### 3. Create a job
+### Apply to a job
 
-```bash
-stellar contract invoke \
-	--id $CONTRACT_ID \
-	--network local \
-	--source alice \
-	-- create_job \
-	--employer "$(stellar keys address alice)" \
-	--title "Rust Smart Contract Engineer" \
-	--description "Build and maintain Soroban contracts" \
-	--location "Remote" \
-	--required_skills '["Rust","Soroban","Testing"]' \
-	--salary_min 4000 \
-	--salary_max 9000
+```powershell
+stellar contract invoke `
+	--id hello_world `
+	--source-account bob `
+	--network testnet `
+	-- apply_to_job `
+	--applicant GBYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY `
+	--job_id 1 `
+	--cover_letter "I have Rust and smart contract experience." `
+	--resume_link "https://example.com/resume.pdf"
 ```
 
-### 4. Apply to the job
+### Accept an application
 
-```bash
-stellar contract invoke \
-	--id $CONTRACT_ID \
-	--network local \
-	--source bob \
-	-- apply_to_job \
-	--applicant "$(stellar keys address bob)" \
-	--job_id 1 \
-	--cover_letter "I build secure Rust contracts and test thoroughly." \
-	--resume_link "https://example.com/bob-resume.pdf"
-```
-
-### 5. Accept application
-
-```bash
-stellar contract invoke \
-	--id $CONTRACT_ID \
-	--network local \
-	--source alice \
-	-- set_application_status \
-	--employer "$(stellar keys address alice)" \
-	--application_id 1 \
+```powershell
+stellar contract invoke `
+	--id hello_world `
+	--source-account alice `
+	--network testnet `
+	-- set_application_status `
+	--employer GBXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX `
+	--application_id 1 `
 	--status Accepted
 ```
 
-## Test Coverage
+### List applications for a job
 
-Current tests validate:
+```powershell
+stellar contract invoke `
+	--id hello_world `
+	--source-account alice `
+	--network testnet `
+	-- list_job_application_ids `
+	--job_id 1
+```
 
-- Happy path: create job -> apply -> accept.
-- Duplicate application is rejected.
-- Non-owner status updates are rejected.
+## Tech Stack
 
-## Roadmap Ideas
+- Rust 2021 edition
+- Soroban SDK v25
+- Stellar Soroban CLI
 
-- Pagination for large job lists.
-- Profile and reputation score per address.
-- Rich filtering by location, skills, and salary.
-- Event logging for frontend-friendly indexing.
+## Future Improvements
 
-## License
+Good next features for this project:
 
-Add your preferred license (MIT, Apache-2.0, or proprietary) before production deployment.
+- store applicant profile details
+- store employer company profile
+- add job categories
+- add pagination for large result sets
+- add events for indexing in a frontend app
+
+## Summary
+
+This repository is now a complete Soroban smart contract project for job posting and job application handling, with tests, build support, and deployment-ready WASM output.
