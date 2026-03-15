@@ -126,7 +126,8 @@ CBG5EZZWEYWGDGPZLLSCGNBQJPRDBDPSYCZ4PC3JAGATTTHRVQCUCHQJ
 
 # 📸 Deployment Proof
 
-![Contract Explorer Proof](transa
+![Contract Explorer Proof](transaction.png)
+
 # 📷 Screenshots
 
 Store all images inside an **images folder**.
