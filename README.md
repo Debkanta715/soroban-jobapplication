@@ -237,10 +237,10 @@ Add your deployed contract details here so anyone reading the project can quickl
 
 ### Contract Address
 
-Paste your real deployed contract ID here:
+Current deployed contract ID:
 
 ```text
-Contract ID: CXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Contract ID: CBG5EZZWEYWGDGPZLLSCGNBQJPRDBDPSYCZ4PC3JAGATTTHRVQCUCHQJ
 ```
 
 If you want, you can also keep a shareable block like this:
@@ -249,15 +249,21 @@ If you want, you can also keep a shareable block like this:
 Project Name: Soroban Job Application
 Network: testnet
 Alias: hello_world
-Contract ID: CXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Contract ID: CBG5EZZWEYWGDGPZLLSCGNBQJPRDBDPSYCZ4PC3JAGATTTHRVQCUCHQJ
 ```
 
 ## Images
 
 You can add screenshots or UI images here when you build a frontend, dashboard, or deployment proof.
 
+Current screenshot you shared:
+
+- Stellar Lab contract explorer screenshot for the deployed testnet contract
+- Contract ID shown in image: `CBG5EZZWEYWGDGPZLLSCGNBQJPRDBDPSYCZ4PC3JAGATTTHRVQCUCHQJ`
+
 Suggested image files:
 
+- `images/contract-explorer-testnet.png`
 - `images/contract-deploy.png`
 - `images/create-job.png`
 - `images/apply-job.png`
@@ -267,6 +273,9 @@ Example markdown image section:
 
 ```md
 ## Screenshots
+
+### Contract Explorer on Testnet
+![Contract Explorer](images/contract-explorer-testnet.png)
 
 ### Contract Deployment
 ![Contract Deployment](images/contract-deploy.png)
