@@ -252,16 +252,36 @@ Alias: hello_world
 Contract ID: CBG5EZZWEYWGDGPZLLSCGNBQJPRDBDPSYCZ4PC3JAGATTTHRVQCUCHQJ
 ```
 
+## Deployment Proof
+
+This project has already been deployed to Stellar testnet.
+
+Deployment proof details:
+
+- Explorer: Stellar Lab Contract Explorer
+- Network: testnet
+- Alias: `hello_world`
+- Contract ID: `CBG5EZZWEYWGDGPZLLSCGNBQJPRDBDPSYCZ4PC3JAGATTTHRVQCUCHQJ`
+
+Suggested screenshot file for this proof:
+
+```text
+images/contract-explorer-testnet.png
+```
+
+If you save your uploaded screenshot in that path, this image block will render automatically:
+
+```md
+## Deployment Proof Screenshot
+
+![Stellar Lab Contract Explorer - Testnet Deployment](images/contract-explorer-testnet.png)
+```
+
 ## Images
 
-You can add screenshots or UI images here when you build a frontend, dashboard, or deployment proof.
+You can keep all project screenshots inside an `images` folder.
 
-Current screenshot you shared:
-
-- Stellar Lab contract explorer screenshot for the deployed testnet contract
-- Contract ID shown in image: `CBG5EZZWEYWGDGPZLLSCGNBQJPRDBDPSYCZ4PC3JAGATTTHRVQCUCHQJ`
-
-Suggested image files:
+Recommended files:
 
 - `images/contract-explorer-testnet.png`
 - `images/contract-deploy.png`
@@ -269,13 +289,13 @@ Suggested image files:
 - `images/apply-job.png`
 - `images/test-result.png`
 
-Example markdown image section:
+Example screenshots section:
 
 ```md
 ## Screenshots
 
-### Contract Explorer on Testnet
-![Contract Explorer](images/contract-explorer-testnet.png)
+### Deployment Proof
+![Stellar Lab Contract Explorer - Testnet Deployment](images/contract-explorer-testnet.png)
 
 ### Contract Deployment
 ![Contract Deployment](images/contract-deploy.png)
@@ -288,14 +308,6 @@ Example markdown image section:
 
 ### Test Result
 ![Test Result](images/test-result.png)
-```
-
-If you do not have images yet, keep this simple placeholder section:
-
-```md
-## Screenshots
-
-Screenshots will be added here after frontend integration or live contract interaction.
 ```
 
 ## Example Invoke Commands
