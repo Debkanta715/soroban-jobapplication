@@ -16,6 +16,20 @@ Employers can post jobs and manage applicants on-chain. Applicants can browse jo
 - Contract ID: `CC5FRNAQXYIJ6QCGUK7TXHHOHVONRF3ARBG7EZM36PPSJL66ANCPBDYA`
 - Explorer: https://stellar.expert/explorer/testnet/contract/CC5FRNAQXYIJ6QCGUK7TXHHOHVONRF3ARBG7EZM36PPSJL66ANCPBDYA
 
+## Screenshots
+
+### Wallet Connection
+
+![Wallet Connection](walate.png)
+
+### Profile / UI View
+
+![Profile View](prof.png)
+
+### Contract Transaction Proof
+
+![Transaction Proof](transaction.png)
+
 ## Smart Contract Features
 
 - Create job postings
@@ -94,13 +108,13 @@ soroban-jobapplication/
 │        ├─ lib.rs
 │        └─ test.rs
 └─ frontend/
-	 ├─ package.json
-	 ├─ .env
-	 ├─ .env.example
-	 └─ src/
-			├─ contract.ts
-			├─ App.tsx
-			└─ components/
+   ├─ package.json
+   ├─ .env
+   ├─ .env.example
+   └─ src/
+      ├─ contract.ts
+      ├─ App.tsx
+      └─ components/
 ```
 
 ## Prerequisites
