@@ -22,7 +22,7 @@ Employers can post jobs and manage applicants on-chain. Applicants can browse jo
 
 ![Wallet Connection](walate.png)
 
-### Profile / UI View
+### gas fees proof
 
 ![Profile View](prof.png)
 
