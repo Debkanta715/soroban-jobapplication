@@ -124,6 +124,48 @@ soroban-jobapplication/
 - Node.js 18+
 - Freighter browser extension
 
+## How To Run This Project (Quick Start)
+
+Follow these steps from the repository root.
+
+1. Install frontend dependencies
+
+```bash
+npm install --prefix frontend
+```
+
+2. Create frontend environment file
+
+Windows (PowerShell):
+
+```powershell
+Copy-Item frontend/.env.example frontend/.env
+```
+
+macOS/Linux:
+
+```bash
+cp frontend/.env.example frontend/.env
+```
+
+3. Set your contract configuration in `frontend/.env`
+
+```env
+VITE_CONTRACT_ID=CC5FRNAQXYIJ6QCGUK7TXHHOHVONRF3ARBG7EZM36PPSJL66ANCPBDYA
+VITE_RPC_URL=https://soroban-testnet.stellar.org
+VITE_NETWORK_PASSPHRASE=Test SDF Network ; September 2015
+```
+
+4. Start the frontend app
+
+```bash
+npm run dev
+```
+
+5. Open the URL shown by Vite in your terminal (example: http://localhost:5177)
+
+6. Connect Freighter wallet and switch it to Testnet
+
 ## Run Contract Tests
 
 From repository root:
