@@ -1,242 +1,310 @@
-# 🚀 Soroban Job Application Smart Contract
+# Soroban Job Board DApp
 
-A decentralized **job posting and application system** built using **Rust and Soroban (Stellar Smart Contracts)**.
+A full-stack Stellar Soroban project for decentralized hiring.
 
-This smart contract allows employers to create jobs and applicants to apply securely on-chain.
+Employers can post jobs and manage applicants on-chain. Applicants can browse jobs and apply using wallet authorization.
 
----
+## What This Project Includes
 
-# 📌 Features
+- Soroban smart contract in Rust (`contracts/hello-world`)
+- React + Vite frontend (`frontend`) with Freighter wallet integration
+- Testnet deployment setup using Stellar CLI aliases
+
+## Current Testnet Deployment
+
+- Contract Alias: `hello_world`
+- Contract ID: `CC5FRNAQXYIJ6QCGUK7TXHHOHVONRF3ARBG7EZM36PPSJL66ANCPBDYA`
+- Explorer: https://stellar.expert/explorer/testnet/contract/CC5FRNAQXYIJ6QCGUK7TXHHOHVONRF3ARBG7EZM36PPSJL66ANCPBDYA
+
+## Screenshots
+
+### Wallet Connection
+
+![Wallet Connection](walate.png)
+
+### gas fees proof
+
+![Profile View](prof.png)
+
+### Contract Transaction Proof
+
+![Transaction Proof](transaction.png)
+
+## Smart Contract Features
 
 - Create job postings
-- Apply to job listings
-- Accept or reject applications
-- Prevent duplicate applications
-- Restrict job state changes to job owners
-- Query job and application data
+- Open and close jobs (owner only)
+- Apply to open jobs
+- Accept or reject applications (job owner only)
+- List applications by job
+- List applications by applicant
+- Prevent duplicate applications from the same applicant for the same job
 
----
+## Contract Methods
 
-# ⚙️ Smart Contract Functions
+- `create_job(...) -> u64`
+- `get_job(job_id: u64) -> Option<Job>`
+- `set_job_open_status(employer, job_id, is_open)`
+- `apply_to_job(...) -> u64`
+- `get_application(application_id: u64) -> Option<Application>`
+- `set_application_status(employer, application_id, status)`
+- `list_job_application_ids(job_id) -> Vec<u64>`
+- `list_applicant_application_ids(applicant) -> Vec<u64>`
 
-## Create Job
-Creates a new job posting.
+## Validation Rules and Errors
 
-## Apply to Job
-Allows an applicant to submit an application for a job.
+Enforced rules:
 
-## Change Application Status
-Allows the job owner to **accept or reject** applications.
+- `salary_min >= 0`
+- `salary_max >= salary_min`
+- job must exist
+- application must exist
+- job must be open for new applications
+- only job owner can update job/application status
+- applicant cannot apply twice to the same job
 
----
+Contract error codes:
 
-## List Job Applications
+- `InvalidSalaryRange = 1`
+- `JobNotFound = 2`
+- `ApplicationNotFound = 3`
+- `JobClosed = 4`
+- `NotJobOwner = 5`
+- `AlreadyApplied = 6`
 
-```rust
-list_job_application_ids(env: Env, job_id: u64) -> Vec<u64>
+## Frontend Features
+
+- Wallet connect, reconnect, and in-app disconnect (Freighter)
+- Network safety checks (wallet network must match dapp network)
+- Wrong-network warning UI
+- Job board with apply modal
+- Create job form
+- Applicant dashboard (my applications)
+- Employer dashboard (manage jobs and application statuses)
+- Auto-dismissing toast notifications
+
+## Tech Stack
+
+- Rust 2021
+- `soroban-sdk` v25
+- Stellar CLI (`stellar`)
+- React 18 + TypeScript + Vite
+- `@stellar/stellar-sdk` v14
+- `@stellar/freighter-api` v6
+- Tailwind CSS
+
+## Project Structure
+
+```text
+soroban-jobapplication/
+├─ Cargo.toml
+├─ package.json
+├─ README.md
+├─ contracts/
+│  └─ hello-world/
+│     ├─ Cargo.toml
+│     ├─ Makefile
+│     └─ src/
+│        ├─ lib.rs
+│        └─ test.rs
+└─ frontend/
+   ├─ package.json
+   ├─ .env
+   ├─ .env.example
+   └─ src/
+      ├─ contract.ts
+      ├─ App.tsx
+      └─ components/
 ```
 
-Returns all application IDs for a specific job.
+## Prerequisites
 
----
+- Rust toolchain
+- Stellar CLI (`stellar`)
+- Node.js 18+
+- Freighter browser extension
 
-## List Applications by Applicant
+## How To Run This Project (Quick Start)
 
-```rust
-list_applicant_application_ids(env: Env, applicant: Address) -> Vec<u64>
+Follow these steps from the repository root.
+
+1. Install frontend dependencies
+
+```bash
+npm install --prefix frontend
 ```
 
-Returns all applications submitted by a specific applicant.
+2. Create frontend environment file
 
----
+Windows (PowerShell):
 
-# 🔒 Built-In Validation Rules
-
-The contract enforces the following rules:
-
-- Salary cannot be negative
-- `salary_max` cannot be less than `salary_min`
-- Closed jobs cannot receive applications
-- An applicant cannot apply to the same job twice
-- Only the job owner can modify job state
-- Only the job owner can change application status
-
----
-
-# ⚠️ Error Types
-
-```rust
-InvalidSalaryRange = 1
-JobNotFound = 2
-ApplicationNotFound = 3
-JobClosed = 4
-NotJobOwner = 5
-AlreadyApplied = 6
+```powershell
+Copy-Item frontend/.env.example frontend/.env
 ```
 
----
+macOS/Linux:
 
-# 🧪 Running Tests
+```bash
+cp frontend/.env.example frontend/.env
+```
 
-Run tests from the project root:
+3. Set your contract configuration in `frontend/.env`
+
+```env
+VITE_CONTRACT_ID=CC5FRNAQXYIJ6QCGUK7TXHHOHVONRF3ARBG7EZM36PPSJL66ANCPBDYA
+VITE_RPC_URL=https://soroban-testnet.stellar.org
+VITE_NETWORK_PASSPHRASE=Test SDF Network ; September 2015
+```
+
+4. Start the frontend app
+
+```bash
+npm run dev
+```
+
+5. Open the URL shown by Vite in your terminal (example: http://localhost:5177)
+
+6. Connect Freighter wallet and switch it to Testnet
+
+## Run Contract Tests
+
+From repository root:
 
 ```bash
 cargo test -p hello-world
 ```
 
----
+## Build Contract
 
-# 🏗 Build the Smart Contract
+From contract folder:
 
 ```bash
 cd contracts/hello-world
 stellar contract build
 ```
 
-Output:
+Output wasm:
 
-```
+```text
 target/wasm32v1-none/release/hello_world.wasm
 ```
 
----
+## Deploy Contract (Testnet)
 
-# 🌐 Deployment Information
+Example command used in this project:
 
-| Property | Value |
-|--------|------|
-Network | Testnet |
-Alias | hello_world |
-Package | hello-world |
-WASM File | target/wasm32v1-none/release/hello_world.wasm |
-
----
-
-# 🔗 Smart Contract Address
-
-### Contract ID
-
-👉 https://stellar.expert/explorer/testnet/contract/CBG5EZZWEYWGDGPZLLSCGNBQJPRDBDPSYCZ4PC3JAGATTTHRVQCUCHQJ
-
-```
-CBG5EZZWEYWGDGPZLLSCGNBQJPRDBDPSYCZ4PC3JAGATTTHRVQCUCHQJ
+```bash
+stellar contract deploy --package hello-world --source-account alice --network testnet --alias hello_world
 ```
 
----
+Check alias:
 
-# 📸 Deployment Proof
-
-Add your screenshot inside:
-
-```
-images/transction.png
+```bash
+stellar contract alias show hello_world
 ```
 
-Example:
-
-
+## Frontend Setup
 ![Contract Explorer Proof](transction.png)
 
+From repository root:
 
----
-
-# 📷 Screenshots
-
-Store all images inside an **images folder**.
-
-### Contract Deployment
-
-```md
-![Contract Deployment](images/contract-deploy.png)
+```bash
+npm install --prefix frontend
 ```
 
-### Create Job Example
+Create/update env file:
 
-```md
-![Create Job](images/create-job.png)
+```bash
+cp frontend/.env.example frontend/.env
 ```
 
-### Apply to Job
+Set these values in `frontend/.env`:
 
-```md
-![Apply Job](images/apply-job.png)
+```env
+VITE_CONTRACT_ID=CC5FRNAQXYIJ6QCGUK7TXHHOHVONRF3ARBG7EZM36PPSJL66ANCPBDYA
+VITE_RPC_URL=https://soroban-testnet.stellar.org
+VITE_NETWORK_PASSPHRASE=Test SDF Network ; September 2015
 ```
 
-### Test Results
+## Run Frontend
 
-```md
-![Test Result](images/test-result.png)
+From repository root:
+
+```bash
+npm run dev
 ```
 
----
+This root script proxies to `frontend` and starts Vite.
 
-# 🧾 Example Invoke Commands
+Build frontend:
 
-## Create Job
+```bash
+npm run build
+```
+
+Preview production build:
+
+```bash
+npm run preview
+```
+
+## Example Contract Invocations
+
+Create job:
 
 ```bash
 stellar contract invoke \
---id hello_world \
---source-account alice \
---network testnet \
--- create_job \
---employer GBXXXXXXXXXXXXXXXXXXXXXXXXXXXX \
---title "Rust Smart Contract Engineer" \
---description "Build secure Soroban applications" \
---location "Remote" \
---required_skills '["Rust","Soroban","Testing"]' \
---salary_min 3000 \
---salary_max 7000
+	--id hello_world \
+	--source-account alice \
+	--network testnet \
+	-- create_job \
+	--employer GBXXXXXXXXXXXXXXXXXXXXXXXXXXXX \
+	--title "Rust Smart Contract Engineer" \
+	--description "Build secure Soroban applications" \
+	--location "Remote" \
+	--required_skills '["Rust","Soroban","Testing"]' \
+	--salary_min 3000 \
+	--salary_max 7000
 ```
 
----
-
-## Get Job
+Get job:
 
 ```bash
 stellar contract invoke \
---id hello_world \
---network testnet \
--- get_job \
---job_id 1
+	--id hello_world \
+	--network testnet \
+	-- get_job \
+	--job_id 1
 ```
 
----
-
-## Apply to Job
+Apply to job:
 
 ```bash
 stellar contract invoke \
---id hello_world \
---source-account bob \
---network testnet \
--- apply_to_job \
---applicant GBYYYYYYYYYYYYYYYYYYYYYYYY \
---job_id 1 \
---cover_letter "I have Rust and smart contract experience." \
---resume_link "https://example.com/resume.pdf"
+	--id hello_world \
+	--source-account alice \
+	--network testnet \
+	-- apply_to_job \
+	--applicant GBYYYYYYYYYYYYYYYYYYYYYYYY \
+	--job_id 1 \
+	--cover_letter "I have Rust and smart contract experience." \
+	--resume_link "https://example.com/resume.pdf"
 ```
 
----
+## Notes
 
-# 🧰 Tech Stack
+- `npm run dev` must be run from repository root (or run `npm run dev` directly in `frontend`).
+- If wallet transactions fail, confirm Freighter network matches `Testnet`.
+- If UI appears blank, check the current Vite port in terminal output.
 
-- Rust (2021 edition)
-- Soroban SDK v25
-- Stellar Soroban CLI
+## Future Improvements
 
----
-
-# 🚀 Future Improvements
-
-- Applicant profile storage
-- Employer company profiles
-- Job categories
-- Pagination for large result sets
-- Events for frontend indexing
+- Pagination for job and application lists
+- Event indexing for faster frontend reads
+- Employer/applicant profile metadata
+- Better filtering/search for jobs
 
 ---
 
-# 📄 Summary
+Built with Soroban, Stellar RPC, and Freighter wallet integration.
 
-This repository contains a **complete Soroban smart contract project** for job posting and job application management with tests, build support, and deployment-ready WASM output.
