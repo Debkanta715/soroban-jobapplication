@@ -14,7 +14,7 @@ export const SiteContent = mongoose.model("SiteContent", siteContentSchema);
 export async function connectDatabase() {
   if (!config.mongodbUri) {
     // eslint-disable-next-line no-console
-    console.warn("mongodb+srv://yt:FKIg2V83dkRuE5Np@firstproject.eieqkdx.mongodb.net/project2");
+    console.warn("");
     return;
   }
 
